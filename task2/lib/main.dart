@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Startup Names',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black
-        ),
+            backgroundColor: Colors.white, foregroundColor: Colors.black),
         primarySwatch: Colors.blue,
       ),
       home: const RandomWords(),
@@ -25,83 +23,78 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class RandomWords extends StatefulWidget{
-  const RandomWords({Key?key}):super(key: key);
+class RandomWords extends StatefulWidget {
+  const RandomWords({Key? key}) : super(key: key);
 
   @override
-  _RandomWordsState createState()=>_RandomWordsState();
+  _RandomWordsState createState() => _RandomWordsState();
 }
 
-class _RandomWordsState extends State<RandomWords>
-{
-  final suggestions=<WordPair>[];
+class _RandomWordsState extends State<RandomWords> {
+  final suggestions = <WordPair>[];
 
-  final fontsize=const TextStyle(fontSize: 18.0);
-  final saved=<WordPair>{};
+  final fontSize = const TextStyle(fontSize: 18.0);
+  final saved = <WordPair>{};
 
-
-  pushSaved()
-  {
+  pushSaved() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-          builder: (context){
-            final tiles=saved.map((pair){
+        builder: (context) {
+          final tiles = saved.map(
+            (pair) {
               return ListTile(
                 title: Text(
                   pair.asPascalCase,
-                  style: fontsize,
+                  style: fontSize,
                 ),
               );
             },
-            );
-            final division=tiles.isNotEmpty?ListTile.divideTiles(tiles: tiles,context: context).toList():<Widget>[];
+          );
+          final division = tiles.isNotEmpty
+              ? ListTile.divideTiles(tiles: tiles, context: context).toList()
+              : <Widget>[];
 
-
-            return Scaffold(
-              appBar:AppBar(
-                title: const Text('Saved Suggestions'),),
-              body: ListView(children:division),
-            );
-          },
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Saved Suggestions'),
+            ),
+            body: ListView(children: division),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildRow(WordPair pair)
-  {
-    final alreadysaved=saved.contains(pair);
+  Widget _buildRow(WordPair pair) {
+    final alreadySaved = saved.contains(pair);
     return ListTile(
       title: Text(
         pair.asPascalCase,
-        style: fontsize,
+        style: fontSize,
       ),
       trailing: Icon(
-        alreadysaved?Icons.favorite:Icons.favorite_border,
-        color: alreadysaved?Colors.red:null,
-        semanticLabel: alreadysaved?'Remove from saved' : 'Save',
+        alreadySaved ? Icons.favorite : Icons.favorite_border,
+        color: alreadySaved ? Colors.red : null,
+        semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
       ),
-      onTap: (){
+      onTap: () {
         setState(() {
-          if(alreadysaved){
+          if (alreadySaved) {
             saved.remove(pair);
+          } else {
+            saved.add(pair);
           }
-          else
-            {
-              saved.add(pair);
-            }
         });
       },
     );
   }
 
   @override
-  Widget build(BuildContext context)
-  {
-
+  Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
-        title:  const Text(("Random Names of Startup"),
+        title: const Text(
+          ("Random Names of Startup"),
         ),
         actions: [
           IconButton(
@@ -110,29 +103,22 @@ class _RandomWordsState extends State<RandomWords>
             tooltip: 'Saved',
           ),
         ],
-
       ),
-      body: ListView.builder(padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context,i) {
-          if(i.isOdd)
-          {
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemBuilder: (context, i) {
+          if (i.isOdd) {
             return const Divider();
           }
 
-          final index= i ~/2;
+          final index = i ~/ 2;
 
-          if(index>=suggestions.length)
-          {
+          if (index >= suggestions.length) {
             suggestions.addAll(generateWordPairs().take(20));
           }
           return _buildRow(suggestions[index]);
-
-
         },
-
       ),
-
     );
   }
-
 }
