@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'helper.dart';
 
-void main(){
+void main() {
   runApp(const HorizonsApp());
 }
 
@@ -12,56 +13,46 @@ class HorizonsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
       theme: ThemeData.dark(),
-
-      title:'Weather Update',
+      title: 'Weather Update',
       scrollBehavior: const ConstantScrollBehavior(),
-      
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Weather Updates"),
+          body: CustomScrollView(slivers: <Widget>[
+        SliverAppBar(
           backgroundColor: Colors.teal,
-        ),
-        body: CustomScrollView(
-          slivers:<Widget>[
-            SliverAppBar(
-              backgroundColor:Colors.teal,
-              pinned: true,
-              stretch: true,
-
-
-              expandedHeight: 200,
-              flexibleSpace: FlexibleSpaceBar(
-                title: const Text('Weather'),
-                stretchModes:const <StretchMode> [
-                  StretchMode.blurBackground,
-                  StretchMode.fadeTitle,
-                ],
-                collapseMode: CollapseMode.none,
-                background: DecoratedBox(
-                position: DecorationPosition.foreground,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: <Color>[
-                      Colors.teal[800]!,
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-                child: Image.network(
-                  headerImage,
-                  fit: BoxFit.cover,
+          pinned: false,
+          stretch: true,
+          floating: true,
+          expandedHeight: 200,
+          flexibleSpace: FlexibleSpaceBar(
+            title: const Text('Weather'),
+            stretchModes: const <StretchMode>[
+              StretchMode.blurBackground,
+              StretchMode.fadeTitle,
+              StretchMode.zoomBackground,
+            ],
+            collapseMode: CollapseMode.parallax,
+            background: DecoratedBox(
+              position: DecorationPosition.foreground,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.center,
+                  colors: <Color>[
+                    Colors.teal[800]!,
+                    Colors.transparent,
+                  ],
                 ),
               ),
+              child: Image.network(
+                headerImage,
+                fit: BoxFit.cover,
               ),
             ),
+          ),
+        ),
         const WeeklyForecast(),
-        ]
-        )
-      ),
+      ])),
     );
   }
 }
@@ -69,16 +60,16 @@ class HorizonsApp extends StatelessWidget {
 class WeeklyForecast extends StatelessWidget {
   const WeeklyForecast({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    final DateTime cd=DateTime.now();
-    final TextTheme textTheme=Theme.of(context).textTheme;
+    final DateTime cd = DateTime.now();
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return SliverList(
-        delegate: SliverChildBuilderDelegate(
-         (BuildContext context ,int index) {
-          final DailyForecast dailyForecast=Server.getDailyForecastByID(index);
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          final DailyForecast dailyForecast =
+              Server.getDailyForecastByID(index);
           return Card(
             child: Row(
               children: <Widget>[
@@ -139,15 +130,8 @@ class WeeklyForecast extends StatelessWidget {
             ),
           );
         },
-          childCount: 7,
-
-        ),
+        childCount: 7,
+      ),
     );
   }
 }
-
-
-
-
-
-
