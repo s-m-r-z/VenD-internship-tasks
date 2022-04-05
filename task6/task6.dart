@@ -1,6 +1,3 @@
-
-
-
 class Meal {
   late String _description;
 
@@ -11,79 +8,60 @@ class Meal {
   String get description => _description;
 }
 
-int _computeValue() {
-  print('In _computeValue...');
-  return 3;
-}
-
 class CachedValueProvider {
+  int _computeValue() {
+    print('In _computeValue...');
+    return 3;
+  }
+
   late final _cache = _computeValue();
   int get value => _cache;
 }
 
-
-
-
 void main() {
- 
   question1();
-    
 
-  
   question2();
   question3();
   question4();
   question5();
   question6();
-  
-  
-  
-  
+
   final myMeal = Meal();
   myMeal.description = 'Feijoada!';
   print(myMeal.description);
-  
+
   print('Calling constructor...');
   var provider = CachedValueProvider();
   print('Getting value...');
   print('The value is ${provider.value}!');
-  
-  
 }
 
-question1()
-{
-     String? name;
+question1() {
+  String? name;
 
-    name="Mehdi";
+  name = "Mehdi";
 
-    print('a is $name');
- }
+  print('a is $name');
+}
 
-question2()
-{
-  
+question2() {
   String? a;
   a = null;
   print('a is $a.');
-
 }
 
-question3()
-{
+question3() {
   List<String> aListOfStrings = ['one', 'two', 'three'];
-  List<String?> aNullableListOfStrings=[];
+  List<String?> aNullableListOfStrings = [];
   List<String?> aListOfNullableStrings = ['one', null, 'three'];
 
   print('aListOfStrings is $aListOfStrings.');
   print('aNullableListOfStrings is $aNullableListOfStrings.');
   print('aListOfNullableStrings is $aListOfNullableStrings.');
-
 }
 
-question4()
-{
-  
+question4() {
   int? couldReturnNullButDoesnt() => -3;
 
   int? couldBeNullButIsnt = 1;
@@ -98,33 +76,21 @@ question4()
   print('c is $c.');
 }
 
-question5(){
-  
+question5() {
   int getLength(String? str) {
-  // Add null check here
+    // Add null check here
 
-  return str!.length;
+    return str!.length;
   }
-  
+
   print(getLength("This is a string!"));
-
 }
 
-question6(){
-  
+question6() {
   int getLength(String? str) {
+    return str!.length;
+  }
 
-  return str!.length;
-}
-  
   print(getLength(null));
-
-
 }
-
-  
-
-
-  
-
 
