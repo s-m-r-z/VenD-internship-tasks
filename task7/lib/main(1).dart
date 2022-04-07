@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    const AppStateWidget(
-      child: MaterialApp(
+    AppStateWidget(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Store',
         home: MyStorePage(),
@@ -13,10 +13,7 @@ void main() {
 }
 
 class AppState {
-  AppState({
-    required this.productList,
-    this.itemsInCart = const <String>{},
-  });
+  AppState({required this.productList, this.itemsInCart = const <String>{}});
 
   final List<String> productList;
   final Set<String> itemsInCart;
@@ -26,9 +23,8 @@ class AppState {
     Set<String>? itemsInCart,
   }) {
     return AppState(
-      productList: productList ?? this.productList,
-      itemsInCart: itemsInCart ?? this.itemsInCart,
-    );
+        productList: productList ?? this.productList,
+        itemsInCart: itemsInCart ?? this.itemsInCart);
   }
 }
 
@@ -37,19 +33,17 @@ class AppStateScope extends InheritedWidget {
       : super(key: key, child: child);
 
   final AppState data;
-
   static AppState of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppStateScope>()!.data;
   }
 
-  @override
-  bool updateShouldNotify(AppStateScope oldWidget) {
+  bool onUpdateNotify(AppStateScope oldWidget) {
     return data != oldWidget.data;
   }
 }
 
 class AppStateWidget extends StatefulWidget {
-  const AppStateWidget({required this.child, Key? key}) : super(key: key);
+  AppStateWidget({required this.child});
 
   final Widget child;
 
@@ -62,16 +56,12 @@ class AppStateWidget extends StatefulWidget {
 }
 
 class AppStateWidgetState extends State<AppStateWidget> {
-  AppState _data = AppState(
-    productList: Server.getProductList(),
-  );
+  AppState _data = AppState(productList: Server.getProductList());
 
   void setProductList(List<String> newProductList) {
     if (newProductList != _data.productList) {
       setState(() {
-        _data = _data.copyWith(
-          productList: newProductList,
-        );
+        _data = _data.copyWith(productList: newProductList);
       });
     }
   }
@@ -81,31 +71,24 @@ class AppStateWidgetState extends State<AppStateWidget> {
       final Set<String> newItemsInCart = Set<String>.from(_data.itemsInCart);
       newItemsInCart.add(id);
       setState(() {
-        _data = _data.copyWith(
-          itemsInCart: newItemsInCart,
-        );
+        _data.copyWith(itemsInCart: newItemsInCart);
       });
     }
   }
 
   void removeFromCart(String id) {
-    if (_data.itemsInCart.contains(id)) {
+    if (!_data.itemsInCart.contains(id)) {
       final Set<String> newItemsInCart = Set<String>.from(_data.itemsInCart);
       newItemsInCart.remove(id);
       setState(() {
-        _data = _data.copyWith(
-          itemsInCart: newItemsInCart,
-        );
+        _data.copyWith(itemsInCart: newItemsInCart);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return AppStateScope(
-      _data,
-      child: widget.child,
-    );
+    return AppStateScope(_data, child: widget.child);
   }
 }
 
@@ -121,7 +104,7 @@ class MyStorePageState extends State<MyStorePage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  void _toggleSearch(BuildContext context) {
+  void _toggleSearch() {
     setState(() {
       _inSearch = !_inSearch;
     });
@@ -129,9 +112,10 @@ class MyStorePageState extends State<MyStorePage> {
     _controller.clear();
   }
 
-  void _handleSearch(BuildContext context) {
+  void _handleSearch() {
     _focusNode.unfocus();
     final String filter = _controller.text;
+
     AppStateWidget.of(context)
         .setProductList(Server.getProductList(filter: filter));
   }
@@ -151,33 +135,31 @@ class MyStorePageState extends State<MyStorePage> {
                     autofocus: true,
                     focusNode: _focusNode,
                     controller: _controller,
-                    onSubmitted: (_) => _handleSearch(context),
+                    onSubmitted: (_) => _handleSearch(),
                     decoration: InputDecoration(
                       hintText: 'Search Google Store',
                       prefixIcon: IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: () => _handleSearch(context),
-                      ),
+                          icon: const Icon(Icons.search),
+                          onPressed: _handleSearch),
                       suffixIcon: IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => _toggleSearch(context),
-                      ),
+                          icon: const Icon(Icons.close),
+                          onPressed: _toggleSearch),
                     ),
                   )
                 : null,
             actions: [
               if (!_inSearch)
                 IconButton(
-                  onPressed: () => _toggleSearch(context),
+                  onPressed: _toggleSearch,
                   icon: const Icon(Icons.search, color: Colors.black),
                 ),
-              const ShoppingCartIcon(),
+              ShoppingCartIcon(),
             ],
             backgroundColor: Colors.white,
             pinned: true,
           ),
-          const SliverToBoxAdapter(
-            child: ProductListWidget(),
+          SliverToBoxAdapter(
+            child: ProductListWidget(key: productList),
           ),
         ],
       ),
@@ -245,7 +227,6 @@ class ProductListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> productList = AppStateScope.of(context).productList;
     return Column(
       children:
           productList.map((id) => _buildProductTile(id, context)).toList(),
@@ -319,7 +300,6 @@ class ProductTile extends StatelessWidget {
     );
   }
 }
-
 // The code below is for the dummy server, and you should not need to modify it
 // in this workshop.
 
