@@ -1,0 +1,4 @@
+#Mon Apr 11 11:27:04 PKT 2022
+base.0=/Users/mehdizaidi/Documents/GitHub/VenD-internship-tasks/task9/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
