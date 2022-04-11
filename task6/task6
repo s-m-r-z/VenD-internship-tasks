@@ -1,0 +1,7 @@
+- Learned the importance of Null Safety in a Code
+- Performed some important exercises to highlight the differnce between '?' and '!' operators
+- Implementated the use cases of:
+   - Nullable and Non-Nullable Types
+   - Null Assertion Operator
+   - Late Keyword and LazyLoading
+   - Type Promotion(Explicit Type Casting)
