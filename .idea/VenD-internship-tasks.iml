@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/task7/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/task7/build" />
+      <excludeFolder url="file://$MODULE_DIR$/task7/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task01_updated/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task01_updated/build" />
+      <excludeFolder url="file://$MODULE_DIR$/task01_updated/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/task4/build" />
+      <excludeFolder url="file://$MODULE_DIR$/task4/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/task4/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task5/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task5/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/task5/build" />
+      <excludeFolder url="file://$MODULE_DIR$/task9/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/task9/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task9/build" />
+      <excludeFolder url="file://$MODULE_DIR$/task01/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task01/build" />
+      <excludeFolder url="file://$MODULE_DIR$/task01/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/task3/build" />
+      <excludeFolder url="file://$MODULE_DIR$/task3/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task3/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/task2/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/task2/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/task2/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
