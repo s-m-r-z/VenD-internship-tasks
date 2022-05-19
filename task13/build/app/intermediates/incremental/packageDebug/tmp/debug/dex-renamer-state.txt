@@ -1,0 +1,4 @@
+#Mon Apr 25 16:21:54 PKT 2022
+base.0=/Users/mehdizaidi/Desktop/vd_tasks/task13/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
