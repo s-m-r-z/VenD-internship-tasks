@@ -95,9 +95,7 @@ class Example3 extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             RaisedButton(
-              onPressed: () {
-                print('Pickup button pressed.');
-              },
+              onPressed: () {},
               child: const Text(
                 'Pickup',
               ),
@@ -108,9 +106,7 @@ class Example3 extends StatelessWidget {
               thickness: 5.0,
             ),
             RaisedButton(
-              onPressed: () {
-                print('Delivery button pressed.');
-              },
+              onPressed: () {},
               child: const Text(
                 'Delivery',
               ),

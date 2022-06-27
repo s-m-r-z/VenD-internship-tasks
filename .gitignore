@@ -15,6 +15,3 @@
 *.iws
 .idea/
 
-/build/
-/task12/build/
-/task13/build/
