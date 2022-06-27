@@ -57,7 +57,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SendMessage(),
+                  builder: (context) => const SendMessage(),
                 ),
               ),
             },

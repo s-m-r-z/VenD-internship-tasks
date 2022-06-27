@@ -53,7 +53,7 @@ class _SendMessageState extends State<SendMessage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessagesStream(),
+            const MessagesStream(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -118,7 +118,7 @@ class MessagesStream extends StatelessWidget {
 
 //
 class MessageBubble extends StatelessWidget {
-  MessageBubble({this.sender, this.text, this.isMe});
+  const MessageBubble({this.sender, this.text, this.isMe});
 
   final String? sender;
   final String? text;

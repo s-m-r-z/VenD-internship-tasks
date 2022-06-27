@@ -15,7 +15,7 @@ class ChatState extends Equatable {
   }) {
     return ChatState(
       chatState: chatState ?? this.chatState,
-      lastDeletedChat: lastDeletedTodo ?? this.lastDeletedChat,
+      lastDeletedChat: lastDeletedTodo ?? lastDeletedChat,
     );
   }
 
