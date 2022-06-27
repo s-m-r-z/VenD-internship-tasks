@@ -24,6 +24,11 @@ dependencies:
   google_fonts: ^2.1.0
   firebase_messaging: any
   cloud_firestore: any
+  firebase_analytics: any
+  http: any
+  firebase_storage: any
+  path: any
+  image_picker: any
 
   flutter:
     sdk: flutter
@@ -34,6 +39,8 @@ dependencies:
 
 
   cupertino_icons: ^1.0.2
+  flutter_local_notifications: ^9.5.3+1
+  shared_preferences: ^2.0.15
 
 
 dev_dependencies:

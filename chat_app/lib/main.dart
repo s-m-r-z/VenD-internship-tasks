@@ -13,6 +13,7 @@ Future<void> main() {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+
       final authenticationRepository = AuthenticationRepository();
       await authenticationRepository.user.first;
       runApp(

@@ -4,6 +4,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:very_good_analysis/very_good_analysis.dart';
 
 part 'app_event.dart';
@@ -27,15 +28,23 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   final AuthenticationRepository _authenticationRepository;
   late final StreamSubscription<User> _userSubscription;
 
-  void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) {
+  void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) async {
     emit(
       event.user.isNotEmpty
           ? AppState.authenticated(event.user)
           : const AppState.unauthenticated(),
     );
+
+    if (event.user.isNotEmpty) {
+      await _authenticationRepository.saveUser(event.user);
+      await _authenticationRepository.createFirstCollection();
+    }
   }
 
-  void _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) {
+  void _onLogoutRequested(
+      AppLogoutRequested event, Emitter<AppState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     unawaited(_authenticationRepository.logOut());
   }
 

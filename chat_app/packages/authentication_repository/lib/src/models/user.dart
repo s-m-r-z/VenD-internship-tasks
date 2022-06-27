@@ -6,6 +6,7 @@ class User extends Equatable {
     this.email,
     this.name,
     this.photo,
+    this.token,
   });
 
   final String? email;
@@ -16,20 +17,29 @@ class User extends Equatable {
 
   final String? photo;
 
+  final String? token;
+
   static const empty = User(id: '');
 
   bool get isEmpty => this == User.empty;
 
   bool get isNotEmpty => this != User.empty;
 
-  factory User.fromJson(Map<String, String> map) {
+  factory User.fromJson(Map<String, dynamic> map) {
     return User(
-      id: map['id']!,
-      name: map['name'],
+      id: map['id'] as String,
+      name: map['name'] as String?,
+      token: map['token'] as String?,
+      email: map['email'] as String?,
     );
   }
-  Map<String, String> toJson(String token) {
-    return {'email': email!, 'id': id, 'name': name!, 'token': token};
+  Map<String, dynamic> toJson(String fcmToken, String name) {
+    return <String, dynamic>{
+      'email': email,
+      'id': id,
+      'name': name,
+      'token': fcmToken,
+    };
   }
 
   @override

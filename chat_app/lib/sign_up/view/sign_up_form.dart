@@ -23,18 +23,49 @@ class SignUpForm extends StatelessWidget {
       child: Align(
         alignment: const Alignment(0, -1 / 3),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
             _EmailInput(),
-            const SizedBox(height: 8),
+            const SizedBox(
+              height: 8,
+            ),
+            _NameInput(),
+            const SizedBox(
+              height: 8,
+            ),
             _PasswordInput(),
-            const SizedBox(height: 8),
+            const SizedBox(
+              height: 8,
+            ),
             _ConfirmPasswordInput(),
-            const SizedBox(height: 8),
+            const SizedBox(
+              height: 8,
+            ),
             _SignUpButton(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _NameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) => previous.email != current.email,
+      builder: (context, state) {
+        return TextField(
+          key: const Key('signUpForm_nameInput_textField'),
+          onChanged: (name) => context.read<SignUpCubit>().nameChanged(name),
+          keyboardType: TextInputType.emailAddress,
+          decoration: const InputDecoration(
+            labelText: 'name',
+            helperText: '',
+          ),
+        );
+      },
     );
   }
 }

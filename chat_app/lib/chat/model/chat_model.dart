@@ -3,44 +3,55 @@ class Conversation {
 
   final String? id;
 
-  const Conversation({this.messages, this.id});
+  const Conversation({
+    this.messages,
+    this.id,
+  });
 
   Map<String, dynamic> toJson() {
-    return {'messages': messages?.map((e) => e.toJson()).toList()};
+    return {
+      'messages': messages?.map((e) => e.toJson()).toList(),
+    };
   }
 
   factory Conversation.fromJson(Map<String, dynamic> map, String docId) {
     return Conversation(
-      messages: map['message'],
+      messages: (map['messages'] as List?)
+          ?.map(
+            (e) => Message.fromJson(e),
+          )
+          .toList(),
       id: docId,
     );
   }
 }
 
-class Conversations {
-  final List<Conversation>? conversations;
-
-  const Conversations({this.conversations});
-
-  factory Conversations.fromJson(List map) {
-    return Conversations(
-        conversations: map.map((e) => Conversation.fromJson(e, "")).toList());
-  }
-}
-
 class Message {
-  Message({required this.message, required this.id});
+  Message(
+      {required this.message,
+      required this.id,
+      required this.timestamp,
+      this.name});
   final String message;
   final String id;
+  final String timestamp;
+  final String? name;
 
   Map<String, String> toJson() {
-    return {'messages': message, 'id': id};
+    return {
+      'message': message,
+      'id': id,
+      timestamp: 'timestamp',
+      name!: 'name',
+    };
   }
 
-  factory Message.fromJson(Map<String, dynamic> map, String docId) {
+  factory Message.fromJson(Map<String, dynamic> map) {
     return Message(
       message: map['message'],
-      id: docId,
+      id: map['id'],
+      timestamp: map['timestamp'],
+      name: map['name'],
     );
   }
 }
