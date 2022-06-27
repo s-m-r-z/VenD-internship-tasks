@@ -118,7 +118,7 @@ class HomePage extends StatelessWidget {
               : ListView.builder(
                   itemCount: state.chatState.model!.length,
                   itemBuilder: (context, index) {
-                    final item = state.chatState.model![index].id;
+                    final item = state.chatState.model![index].name;
                     if (item == null || item.isEmpty) {
                       return const SizedBox();
                     }

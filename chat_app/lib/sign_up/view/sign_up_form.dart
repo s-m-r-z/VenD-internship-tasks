@@ -20,31 +20,27 @@ class SignUpForm extends StatelessWidget {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            _EmailInput(),
-            const SizedBox(
-              height: 8,
-            ),
-            _NameInput(),
-            const SizedBox(
-              height: 8,
-            ),
-            _PasswordInput(),
-            const SizedBox(
-              height: 8,
-            ),
-            _ConfirmPasswordInput(),
-            const SizedBox(
-              height: 8,
-            ),
-            _SignUpButton(),
-          ],
-        ),
+      child: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          _EmailInput(),
+          const SizedBox(
+            height: 8,
+          ),
+          _NameInput(),
+          const SizedBox(
+            height: 8,
+          ),
+          _PasswordInput(),
+          const SizedBox(
+            height: 8,
+          ),
+          _ConfirmPasswordInput(),
+          const SizedBox(
+            height: 8,
+          ),
+          _SignUpButton(),
+        ],
       ),
     );
   }

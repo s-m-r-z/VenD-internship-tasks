@@ -9,7 +9,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
   /// {@macro sign_up_with_email_and_password_failure}
@@ -182,24 +181,14 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-      await setValue(name);
+
+      await saveUser(currentUser, name);
+      await createFirstCollection();
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
       throw const SignUpWithEmailAndPasswordFailure();
     }
-  }
-
-  Future<void> setValue(String name) async {
-    final preference = await SharedPreferences.getInstance();
-
-    await preference.setString('userName', name);
-  }
-
-  Future<String?> getValue() async {
-    final preference = await SharedPreferences.getInstance();
-
-    return preference.getString('userName')!;
   }
 
   /// Starts the Sign In with Google Flow.
@@ -208,22 +197,18 @@ class AuthenticationRepository {
   Future<void> logInWithGoogle() async {
     try {
       late final firebase_auth.AuthCredential credential;
-      if (isWeb) {
-        final googleProvider = firebase_auth.GoogleAuthProvider();
-        final userCredential = await _firebaseAuth.signInWithPopup(
-          googleProvider,
-        );
-        credential = userCredential.credential!;
-      } else {
-        final googleUser = await _googleSignIn.signIn();
-        final googleAuth = await googleUser!.authentication;
-        credential = firebase_auth.GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-      }
+
+      final googleUser = await _googleSignIn.signIn();
+      final googleAuth = await googleUser!.authentication;
+      credential = firebase_auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
       await _firebaseAuth.signInWithCredential(credential);
+
+      await saveUser(currentUser, googleUser.displayName ?? "");
+      await createFirstCollection();
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw LogInWithGoogleFailure.fromCode(e.code);
     } catch (_) {
@@ -252,12 +237,10 @@ class AuthenticationRepository {
     }
   }
 
-  Future<void> saveUser(User user) async {
+  Future<void> saveUser(User user, String name) async {
     final fcm = await FirebaseMessaging.instance.getToken();
 
-    final name = await getValue();
-
-    if (fcm != null && name != null) {
+    if (fcm != null) {
       await firestore.doc(user.id).set(user.toJson(fcm, name));
     }
   }
@@ -267,10 +250,19 @@ class AuthenticationRepository {
         .doc(auth.currentUser!.uid)
         .collection('conversations')
         .doc('bot')
-        .set(<String, dynamic>{
-      'message': 'This chat application is new',
-      'timestamp': Timestamp.fromDate(DateTime.now()).toString(),
-    });
+        .set(
+      <String, dynamic>{
+        'messages': [
+          {
+            'message': 'This chat application is new',
+            'id': "1",
+            'name': "Bot",
+            'timestamp': Timestamp.fromDate(DateTime.now()),
+          }
+        ],
+        'name': 'Bot',
+      },
+    );
   }
 
   /// Signs out the current user which will emit

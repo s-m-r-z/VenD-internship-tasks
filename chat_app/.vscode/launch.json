@@ -7,45 +7,22 @@
         {
             "name": "chat_app",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "program": "lib/main.dart"
         },
         {
             "name": "chat_app (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "program": "lib/main.dart"
         },
         {
             "name": "chat_app (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
-        },
-        {
-            "name": "authentication_repository",
-            "cwd": "packages/authentication_repository",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "authentication_repository (profile mode)",
-            "cwd": "packages/authentication_repository",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "authentication_repository (release mode)",
-            "cwd": "packages/authentication_repository",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
-            "name": "form_inputs",
-            "cwd": "packages/form_inputs",
-            "request": "launch",
-            "type": "dart"
+            "flutterMode": "release",
+            "program": "lib/main.dart"
         }
     ]
 }

@@ -34,7 +34,7 @@ class OpenMessage extends StatelessWidget {
                     itemCount: state.openMessageState.model?.length ?? 0,
                     itemBuilder: (context, index) {
                       final messageBubble = MessageBubble(
-                        sender: state.openMessageState.model![index].id,
+                        sender: state.openMessageState.model![index].name,
                         text: state.openMessageState.model![index].message,
                         isMe: context
                             .read<ChatCubit>()

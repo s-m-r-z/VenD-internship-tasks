@@ -55,6 +55,14 @@ class ChatCubit extends Cubit<ChatState> {
 
     try {
       await repository.sendMessage(receiverId, messages);
+      emit(
+        state.copyWith(
+          chatState: GeneralApiState(
+            model: state.chatState.model,
+            apiCallState: APICallState.loaded,
+          ),
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -166,4 +174,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   bool isMe(String id) => id == repository.auth.currentUser!.uid;
+
+  bool isBot(int conversationIndex) =>
+      state.chatState.model?[conversationIndex].id! == "bot";
 }

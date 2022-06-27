@@ -8,14 +8,13 @@ import '../cubit/chat_cubit.dart';
 
 // ignore: must_be_immutable
 class ChatDetail extends StatelessWidget {
-  ChatDetail({Key? key, required this.conversationIndex}) : super(key: key);
+  ChatDetail({
+    Key? key,
+    required this.conversationIndex,
+  }) : super(key: key);
 
   final int conversationIndex;
-  final messageController = TextEditingController();
   String? messageText;
-  String? toText;
-
-  final toController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,45 +26,46 @@ class ChatDetail extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
-                    itemCount: state
-                        .chatState.model![conversationIndex].messages!.length,
+                    itemCount: state.chatState.model?[conversationIndex]
+                            .messages?.length ??
+                        0,
                     itemBuilder: (context, index) {
                       final messageBubble = MessageBubble(
-                        sender: state.chatState.model![index].id,
+                        sender: state.chatState.model![conversationIndex]
+                            .messages?[index].name,
                         text: state.chatState.model![conversationIndex]
                             .messages![index].message,
-                        isMe: context
-                            .read<ChatCubit>()
-                            .isMe(state.chatState.model![index].id!),
+                        isMe: context.read<ChatCubit>().isMe(
+                            state.chatState.model![conversationIndex].id!),
                       );
 
                       return messageBubble;
                     }),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: messageController,
-                      onChanged: (value) {
-                        messageText = value;
+              if (!context.read<ChatCubit>().isBot(conversationIndex))
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: (value) {
+                          messageText = value;
+                        },
+                        decoration: messageTextFieldDecoration,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.read<ChatCubit>().sendMessage(
+                            state.chatState.model![conversationIndex].id!,
+                            messageText!);
                       },
-                      decoration: messageTextFieldDecoration,
+                      child: const Text(
+                        'Send',
+                        style: sendButtonTextStyle,
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<ChatCubit>().sendMessage(
-                          state.chatState.model![conversationIndex].id!,
-                          messageText!);
-                    },
-                    child: const Text(
-                      'Send',
-                      style: sendButtonTextStyle,
-                    ),
-                  ),
-                ],
-              )
+                  ],
+                )
             ],
           ),
         );

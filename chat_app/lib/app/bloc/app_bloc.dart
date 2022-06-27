@@ -34,11 +34,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           ? AppState.authenticated(event.user)
           : const AppState.unauthenticated(),
     );
-
-    if (event.user.isNotEmpty) {
-      await _authenticationRepository.saveUser(event.user);
-      await _authenticationRepository.createFirstCollection();
-    }
   }
 
   void _onLogoutRequested(

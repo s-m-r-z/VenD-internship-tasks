@@ -11,8 +11,6 @@ class ChatRepository {
   final firestore = FirebaseFirestore.instance;
   final fcm = FirebaseMessaging.instance;
 
-  DateTime dateTime = DateTime.now();
-
   final users = FirebaseFirestore.instance.collection('users');
   final openMessages = FirebaseFirestore.instance.collection('openMessages');
 
@@ -42,6 +40,7 @@ class ChatRepository {
     }
 
     final receiverUID = retreiveData.docs[0].data()["id"];
+    final receiverName = retreiveData.docs[0].data()["name"];
     final receiverToken = retreiveData.docs[0].data()["token"];
 
     final getCurrentUser = await users.doc(auth.currentUser!.uid).get();
@@ -65,40 +64,39 @@ class ChatRepository {
         .doc(auth.currentUser!.uid)
         .collection("conversations")
         .doc(receiverUID)
-        .set(m.Conversation(messages: [
-          m.Message(
-            id: auth.currentUser!.uid,
-            message: message,
-            timestamp: dateTime.toString(),
-            name: name,
-          )
-        ]).toJson());
+        .set(m.Conversation(
+          messages: [
+            m.Message(
+              id: auth.currentUser!.uid,
+              message: message,
+              timestamp: Timestamp.fromDate(DateTime.now()),
+              name: name,
+            ),
+          ],
+          name: receiverName,
+        ).toJson());
 
     await users
         .doc(receiverUID)
         .collection("conversations")
         .doc(auth.currentUser!.uid)
-        .set(m.Conversation(messages: [
-          m.Message(
-            id: auth.currentUser!.uid,
-            message: message,
-            timestamp: dateTime.toString(),
-            name: name,
-          )
-        ]).toJson());
+        .set(m.Conversation(
+          messages: [
+            m.Message(
+              id: auth.currentUser!.uid,
+              message: message,
+              timestamp: Timestamp.fromDate(DateTime.now()),
+              name: name,
+            )
+          ],
+          name: name,
+        ).toJson());
 
     await sendNotification(receiverId, receiverToken, message);
   }
 
-  // Future<void> sendMessage(String id, List<Message> message) async {
-  //   await users.doc(id).collection("conversations").doc(id).set(
-  //         Conversation(id: id, messages: message).toJson(),
-  //       );
-  // }
-
   Future<void> sendMessage(String receiverID, String message) async {
-    final retreiveData =
-        await users.where('email', isEqualTo: receiverID).get();
+    final retreiveData = await users.where('id', isEqualTo: receiverID).get();
 
     if (retreiveData.docs.isEmpty) {
       throw Exception("User Not Found!");
@@ -111,44 +109,35 @@ class ChatRepository {
 
     final name = await getCurrentUser.data()!["name"];
 
-    final conversationsData = await users
-        .doc(auth.currentUser!.uid)
-        .collection("conversations")
-        .get();
-
-    final conversations = conversationsData.docs
-        .map((e) => m.Conversation.fromJson(e.data(), e.id))
-        .toList();
-
-    if (conversations.any((e) => e.id == receiverUID)) {
-      throw Exception("Conversation already exist");
-    }
-
     await users
         .doc(auth.currentUser!.uid)
         .collection("conversations")
         .doc(receiverUID)
-        .set(m.Conversation(messages: [
-          m.Message(
-            id: auth.currentUser!.uid,
-            message: message,
-            timestamp: Timestamp.fromDate(DateTime.now()).toString(),
-            name: name,
-          )
-        ]).toJson());
+        .update({
+      'messages': FieldValue.arrayUnion([
+        m.Message(
+          id: auth.currentUser!.uid,
+          message: message,
+          timestamp: Timestamp.fromDate(DateTime.now()),
+          name: name,
+        ).toJson()
+      ])
+    });
 
     await users
         .doc(receiverUID)
         .collection("conversations")
         .doc(auth.currentUser!.uid)
-        .set(m.Conversation(messages: [
-          m.Message(
-            id: auth.currentUser!.uid,
-            message: message,
-            timestamp: Timestamp.fromDate(DateTime.now()).toString(),
-            name: name,
-          )
-        ]).toJson());
+        .update({
+      'messages': FieldValue.arrayUnion([
+        m.Message(
+          id: auth.currentUser!.uid,
+          message: message,
+          timestamp: Timestamp.fromDate(DateTime.now()),
+          name: name,
+        ).toJson()
+      ])
+    });
 
     await sendNotification(receiverUID, receiverToken, message);
   }
@@ -176,9 +165,17 @@ class ChatRepository {
 
   Future<void> sendOpenMessage(String message) async {
     String senderId = auth.currentUser!.uid;
+
+    final getCurrentUser = await users.doc(auth.currentUser!.uid).get();
+
+    final name = await getCurrentUser.data()!["name"];
+
     openMessages.doc().set(m.Message(
-            message: message, id: senderId, timestamp: dateTime.toString())
-        .toJson());
+          message: message,
+          id: senderId,
+          timestamp: Timestamp.fromDate(DateTime.now()),
+          name: name,
+        ).toJson());
     sendMessageToTopic();
   }
 

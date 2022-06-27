@@ -22,29 +22,24 @@ class LoginForm extends StatelessWidget {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Image.asset(
-              //   'assets/bloc_logo_small.png',
-              //   height: 120,
-              // ),
-              const SizedBox(height: 16),
-              _EmailInput(),
-              const SizedBox(height: 8),
-              _PasswordInput(),
-              const SizedBox(height: 8),
-              _LoginButton(),
-              const SizedBox(height: 8),
-              _GoogleLoginButton(),
-              const SizedBox(height: 4),
-              _SignUpButton(),
-            ],
-          ),
-        ),
+      child: ListView(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 5),
+        children: [
+          // Image.asset(
+          //   'assets/bloc_logo_small.png',
+          //   height: 120,
+          // ),
+          const SizedBox(height: 16),
+          _EmailInput(),
+          const SizedBox(height: 8),
+          _PasswordInput(),
+          const SizedBox(height: 8),
+          _LoginButton(),
+          const SizedBox(height: 8),
+          _GoogleLoginButton(),
+          const SizedBox(height: 4),
+          _SignUpButton(),
+        ],
       ),
     );
   }
