@@ -1,12 +1,12 @@
 # chat_app
 
-- Features:
+# Features:
 - Send 1-1 messages
 - Send Open Messages
 - Login/Signup/Logout
 - View Messages
 
-- Tools:
+# Tools:
 - Firebase Cloud Messaging
 - Notification via REST Api
 - Firebase Firestore
